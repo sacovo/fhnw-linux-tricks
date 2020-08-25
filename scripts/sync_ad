@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+import os
+from shutil import copyfile
+
+# Hier den Mountpoint des Netzlaufwerk angeben. Wenn du mit gio mountest, sollte das bereits stimmen
+BASE_PATH = (
+    '/run/user/1000/gvfs/smb-share:server=fs.edu.ds.fhnw.ch,share=data/'
+    'HT/E1811_Unterrichte_Bachelor/E1811_Unterrichte_I'
+)
+
+# Der Ordner in den die Dateien kopiert werden sollen.
+TARGET_BASE = '~/fhnw/'
+
+
+# Deine module kannst du hier angeben
+
+MODULES = (
+    '2iCb/mada',
+    '2Ia/dnet1',
+    '2Ib/algd1',
+    '2Ieng/swc',
+)
+
+
+def sync_file(source_file, target_file):
+    # Dateien, die du schon hast werden nicht überschrieben
+    if os.path.exists(target_file):
+        return
+
+    print('syncing: ', source_file)
+
+    copyfile(source_file, target_file)
+
+
+def sync_folder(source_folder, target_folder):
+    print(source_folder)
+    if not os.path.exists(target_folder):
+        os.mkdir(target_folder)
+
+    for to_sync in os.listdir(source_folder):
+        source = os.path.join(source_folder, to_sync)
+        target = os.path.join(target_folder, to_sync)
+        if os.path.isdir(source):
+            sync_folder(source, target)
+        else:
+            sync_file(source, target)
+
+
+def sync_module(module):
+    target_folder = os.path.join(
+        os.path.expanduser(TARGET_BASE),
+        module.split('/')[-1],
+    )
+    source_folder = os.path.join(BASE_PATH, module)
+
+    sync_folder(source_folder, target_folder)
+
+
+def main():
+    for module in MODULES:
+        sync_module(module)
+
+
+if __name__ == '__main__':
+    main()
