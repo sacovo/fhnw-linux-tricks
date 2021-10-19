@@ -24,7 +24,7 @@ pacman -S gvfs gvfs-smb
 sudo mount -t cifs //fs.edu.ds.fhnw.ch/data/ /media/your_user/fhnw -o username=<username>,password=<password>,vers=3.0,sec=ntlmssp,domain=edu
 ```
 
-Wichtig: Der Benutzername sollte in der Form `STxxxxxxx` sein.
+Der Benutzername muss entweder in der Form `vorname.nachname` oder `ST1234567` sein, nicht bei jedem funktioniert beides. Sollte beides nicht gehen, eventuell die ganze `@students.fhnw.ch` Adresse probieren. Die genaue `STxxxxxxx` Nummer sollte im Brief der FH mit den Accountinformationen stehen (wo auch das initiale Passwort enthalten ist).
 
 ## fstab
 
@@ -43,7 +43,7 @@ username=<username>
 password=<password>
 ```
 
-Wichtig: Der Benutzername sollte auch hier in der Form `STxxxxxxx` sein.
+Siehe CIFS für genaue Form des Benutzernames.
 
 ## Synchronisation
 
