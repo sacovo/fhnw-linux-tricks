@@ -18,6 +18,33 @@ gio mount smb://fs.edu.ds.fhnw.ch/data
 pacman -S gvfs gvfs-smb
 ```
 
+## CIFS
+
+```
+sudo mount -t cifs //fs.edu.ds.fhnw.ch/data/ /media/your_user/fhnw -o username=<username>,password=<password>,vers=3.0,sec=ntlmssp,domain=edu
+```
+
+Der Benutzername muss entweder in der Form `vorname.nachname` oder `ST1234567` sein, nicht bei jedem funktioniert beides. Sollte beides nicht gehen, eventuell die ganze `@students.fhnw.ch` Adresse probieren. Die genaue `STxxxxxxx` Nummer sollte im Brief der FH mit den Accountinformationen stehen (wo auch das initiale Passwort enthalten ist).
+
+## fstab
+
+Folgende Zeile in die fstab Datei einfügen.
+
+```
+//fs.edu.ds.fhnw.ch/data/  /media/your_user/fhnw  cifs  credentials=/home/your_user/.fhnw_cred,domain=edu,vers=3.0,sec=ntlmssp,noauto,users   0       0
+```
+
+(alternative URL: `fsemu18.edu.ds.fhnw.ch/e_18_data11$/`)
+
+Die Datei `.fhnw_cred` schaut wie folgt aus:
+
+```
+username=<username>
+password=<password>
+```
+
+Siehe CIFS für genaue Form des Benutzernames.
+
 ## Synchronisation
 
 Das Netzlaufwerk ist manchmal ein bisschen langsam und du kannst die Dateien darauf auch nicht bearbeiten. Es lohnt sich deshalb, diese auf deinen Laptop zu synchronisieren. Dafür kannst du das Python Skript `sync_ad` verwenden. Du musst darin bloss deine Module angeben und eventuell noch den Zielordner anpassen. Danach kannst du das Skript regelmässig laufen lassen und du kannst auch auf die Dateien zugreifen, wenn du gerade nicht mit dem Netzlaufwerk verbunden bist.
